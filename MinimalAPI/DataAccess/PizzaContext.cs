@@ -3,9 +3,12 @@ using MinimalAPI.Domain;
 
 namespace MinimalAPI.DataAccess
 {
-    class PizzaDb : DbContext
+    public class PizzaStoreDbContext(DbContextOptions<PizzaStoreDbContext> dbContextOptions)
+    : DbContext(dbContextOptions)
     {
-        public PizzaDb(DbContextOptions options) : base(options) { }
+        public const string DefaultSchema = "dbo";
+        public const string ConnectionStringName = "PizzaDbContext";
+
         public DbSet<Pizza> Pizzas { get; set; } = null!;
     }
 }
