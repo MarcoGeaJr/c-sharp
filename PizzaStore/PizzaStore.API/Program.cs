@@ -1,5 +1,5 @@
-using MinimalAPI;
-using MinimalAPI.API.Extensions;
+using PizzaStore.API;
+using PizzaStore.API.API.Extensions;
 
 WebApplication
     .CreateBuilder(args)

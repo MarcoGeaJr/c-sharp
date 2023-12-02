@@ -1,6 +1,6 @@
-﻿using MinimalAPI.Application.DTOs;
+﻿using PizzaStore.API.Application.DTOs;
 
-namespace MinimalAPI.Application.Services.PizzaService
+namespace PizzaStore.API.Application.Services.PizzaService
 {
     public interface IPizzaService : IDisposable
     {

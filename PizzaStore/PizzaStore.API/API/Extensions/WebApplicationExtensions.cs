@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MinimalAPI.API.Requests;
-using MinimalAPI.DataAccess;
-using MinimalAPI.Domain;
+using PizzaStore.API.API.Requests;
+using PizzaStore.API.DataAccess;
+using PizzaStore.API.Domain;
 
-namespace MinimalAPI.API.Extensions
+namespace PizzaStore.API.API.Extensions
 {
 	public static class WebApplicationExtensions
 	{

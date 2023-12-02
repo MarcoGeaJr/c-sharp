@@ -1,7 +1,7 @@
 ﻿using Microsoft.OpenApi.Models;
-using MinimalAPI.Application.Services.PizzaService;
+using PizzaStore.API.Application.Services.PizzaService;
 
-namespace MinimalAPI.API.Installers
+namespace PizzaStore.API.API.Installers
 {
     public class ServicesInstaller : IServiceCollectionInstaller
     {

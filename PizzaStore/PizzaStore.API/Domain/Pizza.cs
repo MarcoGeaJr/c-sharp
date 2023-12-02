@@ -1,4 +1,4 @@
-﻿namespace MinimalAPI.Domain
+﻿namespace PizzaStore.API.Domain
 {
     public class Pizza
     {

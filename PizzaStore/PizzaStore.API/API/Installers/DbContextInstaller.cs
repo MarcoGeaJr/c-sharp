@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MinimalAPI.DataAccess;
+using PizzaStore.API.DataAccess;
 
-namespace MinimalAPI.API.Installers
+namespace PizzaStore.API.API.Installers
 {
     public class DbContextInstaller : IServiceCollectionInstaller
     {

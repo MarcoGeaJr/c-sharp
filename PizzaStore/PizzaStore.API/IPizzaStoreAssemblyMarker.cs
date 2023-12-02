@@ -1,4 +1,4 @@
-﻿namespace MinimalAPI
+﻿namespace PizzaStore.API
 {
     public interface IPizzaStoreAssemblyMarker
     {

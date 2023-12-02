@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MinimalAPI.Domain;
+using PizzaStore.API.Domain;
 
-namespace MinimalAPI.DataAccess
+namespace PizzaStore.API.DataAccess
 {
     public class PizzaStoreDbContext(DbContextOptions<PizzaStoreDbContext> dbContextOptions)
     : DbContext(dbContextOptions)
