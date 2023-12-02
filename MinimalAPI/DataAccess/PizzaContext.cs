@@ -7,7 +7,7 @@ namespace MinimalAPI.DataAccess
     : DbContext(dbContextOptions)
     {
         public const string DefaultSchema = "dbo";
-        public const string ConnectionStringName = "PizzaDbContext";
+        public const string ConnectionStringName = "PizzaDbConnection";
 
         public DbSet<Pizza> Pizzas { get; set; } = null!;
     }

@@ -5,90 +5,99 @@ using MinimalAPI.Domain;
 
 namespace MinimalAPI.API.Extensions
 {
-    public static class WebApplicationExtensions
-    {
-        public static WebApplication MapEndpoints(this WebApplication app)
-        {
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI(c =>
-                {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "PizzaStore API V1");
-                });
-            }
+	public static class WebApplicationExtensions
+	{
+		public static WebApplication MapEndpoints(this WebApplication app)
+		{
+			if (app.Environment.IsDevelopment())
+			{
+				app.UseSwagger();
+				app.UseSwaggerUI(c =>
+				{
+					c.SwaggerEndpoint("/swagger/v1/swagger.json", "PizzaStore API V1");
+				});
+			}
 
-            app.UseHttpsRedirection();
+			app.UseHttpsRedirection();
 
 
-            app.MapGet("/pizzas", async (PizzaStoreDbContext db) => await db.Pizzas.ToListAsync())
-                .WithName("GetAllPizzas")
-                .WithOpenApi();
+			app.MapGet("/pizzas", async (PizzaStoreDbContext db) =>
+			{
+				var pizzas = await db.Pizzas.ToListAsync();
 
-            app.MapGet("/pizzas/{id}", async (PizzaStoreDbContext db, int id) => await db.Pizzas.FindAsync(id))
-                .WithName("GetPizzaById")
-                .WithOpenApi();
+				return Results.Ok(pizzas);
+			})
+				.WithName("GetAllPizzas")
+				.WithOpenApi();
 
-            app.MapPost("/pizzas", async (PizzaStoreDbContext db, PostPutPizzaRequest request) =>
-            {
-                if (!request.IsValid())
-                {
-                    return Results.BadRequest("Os dados da pizza não estão válidos.");
-                }
+			app.MapGet("/pizzas/{id}", async (PizzaStoreDbContext db, int id) => await db.Pizzas.FindAsync(id))
+				.WithName("GetPizzaById")
+			.WithOpenApi();
 
-                var pizza = new Pizza(request.Name, request.Description);
+			app.MapPost("/pizzas", async (PizzaStoreDbContext db, PostPizzaRequest request) =>
+			{
+				if (!request.IsValid())
+				{
+					return Results.BadRequest("Os dados da pizza não estão válidos.");
+				}
 
-                await db.Pizzas.AddAsync(pizza);
-                await db.SaveChangesAsync();
+				var pizza = new Pizza(request.Name, request.Description, request.Price);
 
-                return Results.Created($"/pizzas/{pizza.Id}", pizza.Id);
-            })
-                .WithName("PostNewPizza")
-                .WithOpenApi();
+				pizza.IsGlutenFree = request.IsGlutenFree;
 
-            app.MapPut("/pizzas/{id}", async (PizzaStoreDbContext db, PostPutPizzaRequest request, int id) =>
-            {
-                if (!request.IsValid())
-                {
-                    return Results.BadRequest("Os dados da pizza não estão válidos.");
-                }
+				await db.Pizzas.AddAsync(pizza);
+				await db.SaveChangesAsync();
 
-                var pizza = await db.Pizzas.FindAsync(id);
+				return Results.Created($"/pizzas/{pizza.Id}", pizza.Id);
+			})
+				.WithName("PostNewPizza")
+				.WithOpenApi();
 
-                if (pizza is null)
-                {
-                    return Results.NotFound();
-                }
+			app.MapPut("/pizzas/{id}", async (PizzaStoreDbContext db, PutPizzaRequest request, int id) =>
+			{
+				if (id != request.Id || !request.IsValid())
+				{
+					return Results.BadRequest("Os dados da pizza não estão válidos.");
+				}
 
-                pizza.Name = request.Name;
-                pizza.Description = request.Description;
+				var pizza = await db.Pizzas.FindAsync(id);
 
-                await db.SaveChangesAsync();
+				if (pizza is null)
+				{
+					return Results.NotFound();
+				}
 
-                return Results.NoContent();
-            })
-                .WithName("UpdatePizza")
-                .WithOpenApi();
+				pizza.Name = request.Name;
+				pizza.Description = request.Description;
+				pizza.Price = request.Price;
+				pizza.IsGlutenFree = request.IsGlutenFree;
 
-            app.MapDelete("/pizzas/{id}", async (PizzaStoreDbContext db, int id) =>
-            {
-                var pizza = await db.Pizzas.FindAsync(id);
+				await db.SaveChangesAsync();
 
-                if (pizza is null)
-                {
-                    return Results.NotFound();
-                }
+				return Results.NoContent();
+			})
+				.WithName("UpdatePizza")
+				.WithOpenApi();
 
-                db.Pizzas.Remove(pizza);
+			app.MapDelete("/pizzas/{id}", async (PizzaStoreDbContext db, int id) =>
+			{
+				var pizza = await db.Pizzas.FindAsync(id);
 
-                await db.SaveChangesAsync();
+				if (pizza is null)
+				{
+					return Results.NotFound();
+				}
 
-                return Results.Ok();
-            })
-                .WithName("RemovePizza")
-                .WithOpenApi();
+				db.Pizzas.Remove(pizza);
 
-            return app;
-        }
-    }
+				await db.SaveChangesAsync();
+
+				return Results.Ok();
+			})
+				.WithName("RemovePizza")
+				.WithOpenApi();
+
+			return app;
+		}
+	}
 }

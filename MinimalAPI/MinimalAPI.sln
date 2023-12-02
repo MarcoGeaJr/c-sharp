@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34003.232
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinimalAPI", "MinimalAPI.csproj", "{6D5D96BF-5912-4185-8DD5-87B7414914B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinimalAPI", "MinimalAPI.csproj", "{6D5D96BF-5912-4185-8DD5-87B7414914B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzaStore.Web", "..\Feira.Web\PizzaStore.Web.csproj", "{7C3D5F7B-5C08-4BEE-8EBF-C07C6C6425A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{6D5D96BF-5912-4185-8DD5-87B7414914B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D5D96BF-5912-4185-8DD5-87B7414914B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D5D96BF-5912-4185-8DD5-87B7414914B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C3D5F7B-5C08-4BEE-8EBF-C07C6C6425A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C3D5F7B-5C08-4BEE-8EBF-C07C6C6425A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C3D5F7B-5C08-4BEE-8EBF-C07C6C6425A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C3D5F7B-5C08-4BEE-8EBF-C07C6C6425A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
