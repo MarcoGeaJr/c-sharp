@@ -4,7 +4,7 @@ This repository stores the .NET/Azure projects that I developed on the way to ac
 
 ## Table of Contents (Projects)
 
-- PizzaStore
+- [PizzaStore](/PizzaStore)
   - Minimal API's
       - Clean Architecture
       - Installer Pattern
