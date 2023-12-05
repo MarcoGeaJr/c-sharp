@@ -1,20 +1,23 @@
-﻿using PizzaStore.API.Application.DTOs;
+﻿using PizzaStore.API.Domain;
 
 namespace PizzaStore.API.Application.Services.PizzaService
 {
-    public class PizzaService : IPizzaService
+    public class PizzaService(IPizzaRepository _pizzaRepository)
+        : IPizzaService
     {
         private bool disposedValue;
 
-        public Task<IEnumerable<PizzaDto>> GetAllPizzas()
+        public async Task<IEnumerable<PizzaDto>> GetAllPizzas()
         {
-            throw new NotImplementedException();
-        }
+            return await _pizzaRepository
+                .GetAll(PizzaDto.Selector);
+		}
 
-        public Task<PizzaDto> GetPizzaById(int id)
+        public async Task<PizzaDto?> GetPizzaById(int id)
         {
-            throw new NotImplementedException();
-        }
+			return await _pizzaRepository
+				.GetById(id, PizzaDto.Selector);
+		}
 
         public Task Insert(PizzaDto pizzaDto)
         {
@@ -37,8 +40,9 @@ namespace PizzaStore.API.Application.Services.PizzaService
             {
                 if (disposing)
                 {
-                    // TODO: dispose managed state (managed objects)
-                }
+                    _pizzaRepository?.Dispose();
+
+				}
 
                 disposedValue = true;
             }

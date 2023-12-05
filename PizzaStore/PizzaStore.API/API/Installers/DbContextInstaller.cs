@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PizzaStore.API.DataAccess;
+using PizzaStore.API.DataAccess.Repositories;
+using PizzaStore.API.Domain;
 
 namespace PizzaStore.API.API.Installers
 {
@@ -16,7 +18,7 @@ namespace PizzaStore.API.API.Installers
                 options.UseInMemoryDatabase(conStr);
             });
 
-            //services.AddScoped<ITagRepository, TagRepository>();
+            services.AddScoped<IPizzaRepository, PizzaRepository>();
         }
     }
 }
