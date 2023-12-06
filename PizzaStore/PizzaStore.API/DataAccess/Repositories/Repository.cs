@@ -32,6 +32,11 @@ namespace PizzaStore.API.DataAccess.Repositories
 				.SingleOrDefaultAsync();
 		}
 
+		public async Task<TEntity?> GetTracked(params object[] key)
+		{
+			return await _dbSet.FindAsync(key);
+		}
+
 		public async Task AddAsync(TEntity entity)
 		{
 			await _dbSet.AddAsync(entity);
