@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PizzaStore.API.Domain;
+using PizzaStore.API.Domain.Pizza;
 
 namespace PizzaStore.API.DataAccess
 {

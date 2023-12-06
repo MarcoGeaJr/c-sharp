@@ -1,11 +1,15 @@
-﻿using PizzaStore.API.Domain;
+﻿using PizzaStore.API.Domain.Models.Pizza;
 
 namespace PizzaStore.API.Application.Services.PizzaService
 {
-    public class PizzaService(IPizzaRepository _pizzaRepository)
-        : IPizzaService
+    public class PizzaService : IPizzaService
     {
         private bool disposedValue;
+
+        private readonly IPizzaRepository _pizzaRepository;
+
+        public PizzaService(IPizzaRepository pizzaRepository)
+            => (_pizzaRepository) = (pizzaRepository);
 
         public async Task<IEnumerable<PizzaDto>> GetAllPizzas()
         {
@@ -19,10 +23,16 @@ namespace PizzaStore.API.Application.Services.PizzaService
 				.GetById(id, PizzaDto.Selector);
 		}
 
-        public Task Insert(PizzaDto pizzaDto)
+        public Task<int> Insert(PizzaDto pizzaDto)
         {
-            throw new NotImplementedException();
-        }
+			var pizza = new Pizza(pizzaDto.Name, pizzaDto.Description, pizzaDto.UnitPrice);
+
+			pizza.IsGlutenFree = pizzaDto.IsGlutenFree;
+
+			_pizzaRepository.Add(pizza);
+
+			await _pizzaRepository.SaveChangesAsync();
+		}
 
         public Task Update(PizzaDto pizzaDto)
         {

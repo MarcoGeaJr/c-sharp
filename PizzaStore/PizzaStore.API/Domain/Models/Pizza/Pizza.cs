@@ -1,6 +1,6 @@
-﻿namespace PizzaStore.API.Domain
+﻿namespace PizzaStore.API.Domain.Models.Pizza
 {
-    public class Pizza
+    public class Pizza : EntityBase
     {
         public Pizza()
         {
@@ -31,7 +31,6 @@
             IsGlutenFree = isGlutenFree;
         }
 
-        public int Id { get; set; }
         public string? Name { get; set; }
         public string? Description { get; set; }
         public decimal Price { get; set; }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PizzaStore.API.DataAccess;
 using PizzaStore.API.DataAccess.Repositories;
-using PizzaStore.API.Domain;
+using PizzaStore.API.Domain.Models.Pizza;
 
 namespace PizzaStore.API.API.Installers
 {

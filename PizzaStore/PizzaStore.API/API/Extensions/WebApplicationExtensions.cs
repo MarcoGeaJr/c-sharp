@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PizzaStore.API.API.Requests;
+using PizzaStore.API.Application.Services.PizzaService;
 using PizzaStore.API.DataAccess;
 using PizzaStore.API.Domain;
 
@@ -21,34 +22,29 @@ namespace PizzaStore.API.API.Extensions
 			app.UseHttpsRedirection();
 
 
-			app.MapGet("/pizzas", async (PizzaStoreDbContext db) =>
+			app.MapGet("/pizzas", async (IPizzaService pizzaService) =>
 			{
-				var pizzas = await db.Pizzas.ToListAsync();
-
-				return Results.Ok(pizzas);
+				return Results.Ok(await pizzaService.GetAllPizzas());
 			})
 				.WithName("GetAllPizzas")
 				.WithOpenApi();
 
-			app.MapGet("/pizzas/{id}", async (PizzaStoreDbContext db, int id) => await db.Pizzas.FindAsync(id))
+			app.MapGet("/pizzas/{id}", async (IPizzaService pizzaService, int id) => await pizzaService.GetPizzaById(id))
 				.WithName("GetPizzaById")
 			.WithOpenApi();
 
-			app.MapPost("/pizzas", async (PizzaStoreDbContext db, PostPizzaRequest request) =>
+			app.MapPost("/pizzas", async (IPizzaService pizzaService, PostPizzaRequest request) =>
 			{
 				if (!request.IsValid())
 				{
 					return Results.BadRequest("Os dados da pizza não estão válidos.");
 				}
 
-				var pizza = new Pizza(request.Name, request.Description, request.Price);
+				var pizzaDto = new PizzaDto(0, request.Name, request.Description, request.Price, request.IsGlutenFree);
 
-				pizza.IsGlutenFree = request.IsGlutenFree;
+				var pizzaId = await pizzaService.Insert(pizzaDto);
 
-				await db.Pizzas.AddAsync(pizza);
-				await db.SaveChangesAsync();
-
-				return Results.Created($"/pizzas/{pizza.Id}", pizza.Id);
+				return Results.Created($"/pizzas/{pizzaId}", pizzaId);
 			})
 				.WithName("PostNewPizza")
 				.WithOpenApi();

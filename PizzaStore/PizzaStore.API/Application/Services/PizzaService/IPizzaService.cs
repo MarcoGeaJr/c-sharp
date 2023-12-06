@@ -1,4 +1,4 @@
-﻿using PizzaStore.API.Domain;
+﻿using PizzaStore.API.Domain.Pizza;
 
 namespace PizzaStore.API.Application.Services.PizzaService
 {
@@ -6,7 +6,7 @@ namespace PizzaStore.API.Application.Services.PizzaService
     {
         Task<IEnumerable<PizzaDto>> GetAllPizzas();
         Task<PizzaDto?> GetPizzaById(int id);
-        Task Insert(PizzaDto pizzaDto);
+        Task<int> Insert(PizzaDto pizzaDto);
         Task Update(PizzaDto pizzaDto);
         Task Delete(PizzaDto pizzaDto);
     }
