@@ -41,14 +41,31 @@ namespace PizzaStore.API.Application.Services.PizzaService
 			return pizza.Id;
 		}
 
-		public Task Update(PizzaDto pizzaDto)
+		public async Task Update(PizzaDto pizzaDto)
 		{
-			throw new NotImplementedException();
+			var pizza = await _pizzaRepository.GetTracked(pizzaDto.Id);
+
+			if (pizza is null) return;
+
+			pizza.Name = pizzaDto.Name;
+			pizza.Description = pizzaDto.Description;
+			pizza.Price = pizzaDto.UnitPrice;
+			pizza.IsGlutenFree = pizzaDto.IsGlutenFree;
+
+			_pizzaRepository.Update(pizza);
+
+			await _unitOfWork.CommitAsync();
 		}
 
-		public Task Delete(PizzaDto pizzaDto)
+		public async Task Delete(int id)
 		{
-			throw new NotImplementedException();
+			var pizza = await _pizzaRepository.GetTracked(id);
+
+			if (pizza is null) return;
+
+			_pizzaRepository.Delete(pizza);
+
+			await _unitOfWork.CommitAsync();
 		}
 
 		protected virtual void Dispose(bool disposing)

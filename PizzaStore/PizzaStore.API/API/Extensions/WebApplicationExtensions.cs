@@ -1,4 +1,5 @@
-﻿using PizzaStore.API.API.Requests;
+﻿using Microsoft.EntityFrameworkCore;
+using PizzaStore.API.API.Requests;
 using PizzaStore.API.Application.Services.PizzaService;
 using PizzaStore.API.DataAccess;
 using PizzaStore.API.Domain.Models.Pizza;
@@ -48,44 +49,39 @@ namespace PizzaStore.API.API.Extensions
 				.WithName("PostNewPizza")
 				.WithOpenApi();
 
-			app.MapPut("/pizzas/{id}", async (PizzaStoreDbContext db, PutPizzaRequest request, int id) =>
+			app.MapPut("/pizzas/{id}", async (IPizzaService pizzaService, PizzaStoreDbContext db, PutPizzaRequest request, int id) =>
 			{
 				if (id != request.Id || !request.IsValid())
 				{
 					return Results.BadRequest("Os dados da pizza não estão válidos.");
 				}
 
-				var pizza = await db.Pizzas.FindAsync(id);
+				bool existsPizza = await db.Pizzas.AnyAsync(p => p.Id == id);
 
-				if (pizza is null)
+				if (existsPizza)
 				{
 					return Results.NotFound();
 				}
 
-				pizza.Name = request.Name;
-				pizza.Description = request.Description;
-				pizza.Price = request.Price;
-				pizza.IsGlutenFree = request.IsGlutenFree;
+				var pizzaDto = new PizzaDto(request.Id, request.Name, request.Description, request.Price, request.IsGlutenFree);
 
-				await db.SaveChangesAsync();
+				await pizzaService.Update(pizzaDto);
 
 				return Results.NoContent();
 			})
 				.WithName("UpdatePizza")
 				.WithOpenApi();
 
-			app.MapDelete("/pizzas/{id}", async (PizzaStoreDbContext db, int id) =>
+			app.MapDelete("/pizzas/{id}", async (IPizzaService pizzaService, PizzaStoreDbContext db, int id) =>
 			{
-				var pizza = await db.Pizzas.FindAsync(id);
+				bool existsPizza = await db.Pizzas.AnyAsync(p => p.Id == id);
 
-				if (pizza is null)
+				if (existsPizza)
 				{
 					return Results.NotFound();
 				}
 
-				db.Pizzas.Remove(pizza);
-
-				await db.SaveChangesAsync();
+				await pizzaService.Delete(id);
 
 				return Results.Ok();
 			})

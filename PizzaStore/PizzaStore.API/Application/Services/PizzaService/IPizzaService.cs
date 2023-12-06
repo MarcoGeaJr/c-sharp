@@ -8,6 +8,6 @@ namespace PizzaStore.API.Application.Services.PizzaService
 		Task<PizzaDto?> GetPizzaById(int id);
 		Task<int> Insert(PizzaDto pizzaDto);
 		Task Update(PizzaDto pizzaDto);
-		Task Delete(PizzaDto pizzaDto);
+		Task Delete(int id);
 	}
 }
