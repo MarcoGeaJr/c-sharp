@@ -1,14 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PizzaStore.API.Domain.Pizza;
+using PizzaStore.API.Domain.Models.Pizza;
 
 namespace PizzaStore.API.DataAccess
 {
-    public class PizzaStoreDbContext(DbContextOptions<PizzaStoreDbContext> dbContextOptions)
-    : DbContext(dbContextOptions)
-    {
-        public const string DefaultSchema = "dbo";
-        public const string ConnectionStringName = "PizzaDbConnection";
+	public class PizzaStoreDbContext(DbContextOptions<PizzaStoreDbContext> dbContextOptions)
+	: DbContext(dbContextOptions)
+	{
+		public const string DefaultSchema = "dbo";
+		public const string ConnectionStringName = "PizzaDbConnection";
 
-        public DbSet<Pizza> Pizzas { get; set; } = null!;
-    }
+		public DbSet<Pizza> Pizzas { get; set; } = null!;
+	}
 }

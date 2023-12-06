@@ -2,31 +2,35 @@
 using PizzaStore.API.DataAccess.Repositories;
 using PizzaStore.API.Domain.Abstractions;
 using PizzaStore.API.Domain.Models;
-using PizzaStore.API.Domain.Models.Pizza;
 
 namespace PizzaStore.API.DataAccess.UnitOfWork
 {
 	public class UnitOfWork : IUnitOfWork
 	{
-		private readonly DbContext _context;
-		private Dictionary<Type, object> _repositories;
+		private readonly PizzaStoreDbContext _context;
+		private readonly Dictionary<Type, object> _repositories;
 
 		public UnitOfWork(
-			DbContext context)
+			PizzaStoreDbContext context)
 		{
 			_context = context;
 			_repositories = new();
 		}
 
-		public async Task Commit()
+		public async Task CommitAsync()
 		{
 			await _context.SaveChangesAsync();
 		}
 
 		public void RollBack()
 		{
-            foreach (var entry in _context.ChangeTracker.Entries().Where(x => x.State != EntityState.Unchanged))
-            {
+			var modifiedEntries = _context.ChangeTracker
+				.Entries()
+				.Where(x => x.State != EntityState.Unchanged)
+				.ToList();
+
+			foreach (var entry in modifiedEntries)
+			{
 				switch (entry.State)
 				{
 					case EntityState.Modified:
@@ -41,19 +45,19 @@ namespace PizzaStore.API.DataAccess.UnitOfWork
 						break;
 				}
 			}
-        }
+		}
 
-		// TODO
-		public TRepository GetRepository<TEntity, TRepository>()
+		public IRepository<TEntity> GetRepository<TEntity>()
 			where TEntity : EntityBase
-			where TRepository : IRepository<TEntity>
 		{
-			if (_repositories.TryGetValue(typeof(TEntity), out var repository))
+			if (_repositories.ContainsKey(typeof(TEntity)))
 			{
-				return (TRepository)repository;
+				return (IRepository<TEntity>)_repositories[typeof(TEntity)];
 			}
 
-			throw new InvalidOperationException("The repository has not been registered.");
+			var repository = new Repository<TEntity>(_context);
+			_repositories.Add(typeof(TEntity), repository);
+			return repository;
 		}
 	}
 }

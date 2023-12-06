@@ -1,8 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using PizzaStore.API.API.Requests;
+﻿using PizzaStore.API.API.Requests;
 using PizzaStore.API.Application.Services.PizzaService;
 using PizzaStore.API.DataAccess;
-using PizzaStore.API.Domain;
+using PizzaStore.API.Domain.Models.Pizza;
 
 namespace PizzaStore.API.API.Extensions
 {
@@ -40,7 +39,7 @@ namespace PizzaStore.API.API.Extensions
 					return Results.BadRequest("Os dados da pizza não estão válidos.");
 				}
 
-				var pizzaDto = new PizzaDto(0, request.Name, request.Description, request.Price, request.IsGlutenFree);
+				var pizzaDto = new PizzaDto(request.Name, request.Description, request.Price, request.IsGlutenFree);
 
 				var pizzaId = await pizzaService.Insert(pizzaDto);
 

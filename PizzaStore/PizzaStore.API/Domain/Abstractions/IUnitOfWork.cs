@@ -4,8 +4,8 @@ namespace PizzaStore.API.Domain.Abstractions;
 
 public interface IUnitOfWork
 {
-    Task Commit();
+	Task CommitAsync();
 	void RollBack();
-	IRepository<TEntity> GetRepository<TEntity, TRepository>()
-        where TEntity : EntityBase;
+	IRepository<TEntity> GetRepository<TEntity>()
+			where TEntity : EntityBase;
 }

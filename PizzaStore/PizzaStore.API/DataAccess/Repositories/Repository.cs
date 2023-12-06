@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace PizzaStore.API.DataAccess.Repositories
 {
-    public class Repository<TEntity> : IRepository<TEntity> where TEntity : EntityBase
+	public class Repository<TEntity> : IRepository<TEntity> where TEntity : EntityBase
 	{
 		private bool disposedValue;
 		private readonly DbContext _context;
@@ -32,7 +32,7 @@ namespace PizzaStore.API.DataAccess.Repositories
 				.SingleOrDefaultAsync();
 		}
 
-		public async Task Add(TEntity entity)
+		public async Task AddAsync(TEntity entity)
 		{
 			await _dbSet.AddAsync(entity);
 		}
